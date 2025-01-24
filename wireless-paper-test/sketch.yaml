@@ -1,0 +1,2 @@
+default_port: /dev/ttyUSB0
+default_fqbn: Heltec-esp32:esp32:heltec_wireless_paper
