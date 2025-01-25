@@ -20,6 +20,9 @@ struct Segment se = {0, 50, 10, 30};
 struct Segment sf = {40, 50, 10, 30};
 struct Segment sg = {10, 80, 30, 10};
 
+struct Segment sx = {0, 20, 10, 10};
+struct Segment sy = {0, 60, 10, 10};
+
 struct Segment one[2] = {sc, sf};
 struct Segment two[5] = {sa, sc, sd, se, sg};
 struct Segment three[5] = {sa, sc, sd, sf, sg};
@@ -29,6 +32,37 @@ struct Segment six[6] = {sa, sb, sd, se, sf, sg};
 struct Segment seven[3] = {sa, sc, sf};
 struct Segment eight[7] = {sa, sb, sc, sd, se, sf, sg};
 struct Segment nine[5] = {sa, sb, sc, sd, sf};
+
+void drawSegment(struct Segment* s, int size, int offset) {
+    for (int i = 0; i < size; i++) {
+        display.drawRect(
+            s[i].x+offset,
+            s[i].y,
+            s[i].w,
+            s[i].h
+        );
+    }
+}
+
+void fillSegment(struct Segment* s, int size, int offset) {
+    for (int i = 0; i < size; i++) {
+        display.fillRect(
+            s[i].x+offset,
+            s[i].y,
+            s[i].w,
+            s[i].h
+        );
+    }
+}
+
+void drawBar() {
+    display.drawRect(
+        0,
+        110,
+        250,
+        10
+    );
+}
 
 void setup()
 {
@@ -48,13 +82,23 @@ void setup()
 void loop()
 {
     display.clear();
-    for (int i = 0; i < (sizeof(eight) / sizeof(eight[0])); i++) {
-        display.drawRect(eight[i].x, eight[i].y, eight[i].w, eight[i].h);
+
+    int offset = 0;
+    for(int o = 0; o < 4; o++) {
+        drawSegment(eight, sizeof(eight) / sizeof(eight[0]), offset);
+        fillSegment(one, sizeof(one) / sizeof(one[0]), offset);
+
+        offset += 60;
+
+        if (offset == 120) {
+            struct Segment a[2] = {sx, sy};
+            fillSegment(a, 2, offset);
+
+            offset += 20;
+        }
     }
 
-    for (int i = 0; i < (sizeof(one) / sizeof(one[0])); i++) {
-        display.fillRect(one[i].x, one[i].y, one[i].w, one[i].h);
-    }
+    drawBar();
 
     display.update(BLACK_BUFFER);
     display.display();
